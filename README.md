@@ -65,8 +65,12 @@ You can set the bot username, color and the channel it will keep.
 
 Open a terminal in the bot code folder, and run those commands.
 
-```npm install```
+```sh
+npm install
+```
 
-```node index.js```
+```sh
+node index.js
+```
 
 If everything has been set-up well, the bot will run and appear in the right room

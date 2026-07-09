@@ -33,6 +33,8 @@ Section documentation W.I.P
 
 Although nodejs is installed, you must extract the bot source-code to a folder and rename .env.example to .env, and open it to configure your brand new crown keeper.
 
+**If you can't see the .env.example or .env file in the folder, try turning on "View Hidden Files" and "View File Extensions" in your OS**
+
 *.env configuration*
 
 ```env

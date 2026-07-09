@@ -25,21 +25,10 @@ const desiredInitialChSet = {
 // variables
 let didRunSetupDesired = false;
 
-client.on('hi', msg => {
-    // User Standards
-    if (client.user.name != desiredUser.name || client.user.color != desiredUser.color) {
-        client.sendArray([{
-            name: desiredUser.name,
-            color: desiredUser.color
-        }])
-    }
-
-    client.sendArray([desiredChannel])
-});
-
-client.on('ch', msg => {
-    // Set to desired (first-run)
-    if (msg.ch.crown.participantId != client.user.id) return;
+// functions
+function setupRoom() {
+    if (!client.channel || client.channel.id != desiredChannel) return;
+    if (msg.ch.crown.userId != client.user.id) return;
     if (didRunSetupDesired == true) return;
 
     if (
@@ -47,12 +36,35 @@ client.on('ch', msg => {
         msg.ch.settings.color2 != desiredInitialChSet.color2 ||
         msg.ch.settings.chat != desiredInitialChSet.chat
     ) {
-        client.sendArray([{
+        console.log([{
             m: 'chset',
             set: desiredInitialChSet
         }])
         didRunSetupDesired = true;
     }
+}
+
+client.on('hi', msg => {
+    // User Standards
+    if (msg.u.name != desiredUser.name || msg.u.color != desiredUser.color) {
+        client.sendArray([{
+            m: 'userset',
+            set: {
+                name: desiredUser.name,
+                color: desiredUser.color
+            }
+        }])
+    }
+
+    client.sendArray([desiredChannel]);
+    
+    setTimeout(() => {
+        setupRoom();
+    }, 1000);
+});
+
+client.on('ch', msg => {
+    // Set to desired (first-run)
 });
 
 client.on('ppl', msg => {

@@ -39,13 +39,13 @@ client.on('hi', msg => {
 
 client.on('ch', msg => {
     // Set to desired (first-run)
-    if (msg.crown.userId != client.user.id) return;
+    if (msg.ch.crown.participantId != client.user.id) return;
     if (didRunSetupDesired == true) return;
 
     if (
-        msg.settings.color != desiredInitialChSet.color ||
-        msg.settings.color2 != desiredInitialChSet.color2 ||
-        msg.settings.chat != desiredInitialChSet.chat
+        msg.ch.settings.color != desiredInitialChSet.color ||
+        msg.ch.settings.color2 != desiredInitialChSet.color2 ||
+        msg.ch.settings.chat != desiredInitialChSet.chat
     ) {
         client.sendArray([{
             m: 'chset',

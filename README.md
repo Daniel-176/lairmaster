@@ -27,6 +27,7 @@ Section documentation W.I.P
 ### Download the source code and install nodejs
 
 [LairMaster source code](https://github.com/Daniel-176/lairmaster/archive/refs/heads/main.zip)
+
 [NodeJS](https://nodejs.org/en/download/current)
 
 ### Extracting and running
@@ -50,6 +51,7 @@ DESIRED_CHANNELCOLOR2=2b0000
 
 # Set bot/room managers (separated by commas)
 ADMINS=
+
 # example: ADMINS=userid1,userid2,userid3
 ```
 
@@ -63,8 +65,8 @@ You can set the bot username, color and the channel it will keep.
 
 Open a terminal in the bot code folder, and run those commands.
 
-`npm install`
+```npm install```
 
-`node index.js`
+```node index.js```
 
 If everything has been set-up well, the bot will run and appear in the right room

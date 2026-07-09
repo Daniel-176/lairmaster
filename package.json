@@ -21,5 +21,8 @@
   "main": "index.js",
   "scripts": {
     "test": "node -c index.js"
+  },
+  "dependencies": {
+    "ws": "^8.21.0"
   }
 }

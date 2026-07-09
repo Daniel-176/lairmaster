@@ -5,7 +5,7 @@ const client = new Client(process.env.TOKEN);
 const desiredUser = {
     name: process.env.DESIDED_USERNAME,
     color: "#abcdef"
-}
+};
 
 const desiredChannel = {
     "m": "ch",
@@ -13,13 +13,13 @@ const desiredChannel = {
     "set": {
         "visible": true
     }
-}
+};
 
 const desiredInitialChSet = {
     "color": process.env.DESIRED_CHANNELCOLOR,
     "color2": process.env.DESIRED_CHANNELCOLOR2,
     "chat": "true"
-}
+};
 
 // variables
 let didRunSetupDesired = false;
@@ -34,7 +34,7 @@ client.on('hi', msg => {
     }
 
     client.sendArray([desiredChannel])
-})
+});
 
 client.on('ch', msg => {
     // Set to desired (first-run)
@@ -52,11 +52,13 @@ client.on('ch', msg => {
         }])
         didRunSetupDesired = true;
     }
-})
+});
 
 client.on('ppl', msg => {
     /* 
     TODO:
     - do something with that.
     */
-})
+});
+
+client.start();

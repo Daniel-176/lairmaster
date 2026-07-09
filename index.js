@@ -36,6 +36,7 @@ function setupRoom() {
         msg.ch.settings.color2 != desiredInitialChSet.color2 ||
         msg.ch.settings.chat != desiredInitialChSet.chat
     ) {
+        //debug
         console.log([{
             m: 'chset',
             set: desiredInitialChSet
@@ -57,7 +58,7 @@ client.on('hi', msg => {
     }
 
     client.sendArray([desiredChannel]);
-    
+
     setTimeout(() => {
         setupRoom();
     }, 1000);

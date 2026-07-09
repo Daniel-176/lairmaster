@@ -1,0 +1,25 @@
+{
+  "name": "lairmaster",
+  "version": "1.0.0",
+  "description": "A multiplayerpiano.net channel keeper bot good for keeping channels from deletion",
+  "keywords": [
+    "bot",
+    "mppnet",
+    "multiplayerpiano"
+  ],
+  "homepage": "https://github.com/Daniel-176/lairmaster#readme",
+  "bugs": {
+    "url": "https://github.com/Daniel-176/lairmaster/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Daniel-176/lairmaster.git"
+  },
+  "license": "GPL-3.0",
+  "author": "Daniel176",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "node -c index.js"
+  }
+}

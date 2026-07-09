@@ -193,11 +193,6 @@ client.on('a', msg => {
             break;
         }
 
-        case 'realids': {
-            client.say(client.getOwnParticipant()._id);
-            break;
-        }
-
         case 'admin': {
             client.say(`You're ${isAdmin ? "" : "not "}an admin.`);
             break;

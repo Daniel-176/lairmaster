@@ -10,13 +10,13 @@ To get a bot on MPP, you must apply for a bot token on it's oficial [discord ser
 
 This bot's commands is highly inspirated on the GateKeeper bot made by Anonygold, a veteran in MPP.
 
+##### although most of it's commands is mirrored from it's code
+
 ### GateKeeper's Backstory
 
 The GateKeeper was a multiplayerpiano bot that was used by some people that wanted to keep it's rooms alive, without needing to keep their computer turned on 24/7, so Anonygold made this bot.
 
 It was used in highly populated rooms, so it had the functionality of managing it, with the commands `/kickban`, `/roomcolor`, `/ban60` and goes on...
-
-##### although most of it's commands is mirrored from it's code
 
 # Bot features
 

@@ -35,7 +35,7 @@ client.colorLocked = false;
 client.autoBan = false;
 client.voteKickUsers = {};
 client.voteBanUsers = {};
-client.admins = JSON.parse(fs.readFileSync('./admins.json', 'utf8'));
+client.admins = process.env.ADMINS.split(',');
 
 client.setColor = function(msg) {
     const parts = msg.split(" ");

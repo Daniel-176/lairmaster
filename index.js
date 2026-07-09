@@ -175,8 +175,8 @@ client.on('a', msg => {
 
     switch (command) {
         case 'help': {
-            const base = "Commands are: /help, /about, /total, /id" +
-                (isOwner ? ", /votekick, /voteban, /roomcolor. Admin commands are: /votelock, /roomcolorlock, /unban, /kickban, /nocussing, /visibility, /gksay, /autobanner, /crown." : ". Admin commands are: /votelock, /roomcolorlock, /gksay, /autobanner, /crown.");
+            const base = "Commands are: /help, /about, /id" +
+                (isOwner ? ", /votekick, /voteban, /roomcolor. Admin commands are: /votelock, /roomcolorlock, /unban, /kickban, /nocussing, /visibility, /autobanner, /crown." : ". Admin commands are: /votelock, /roomcolorlock, /gksay, /autobanner, /crown.");
             client.say(base);
             break;
         }
@@ -190,35 +190,6 @@ client.on('a', msg => {
             client.say(
                 `This bot is made by daniel176, highly inspired on GateKeeper made by Anonygold!`
             );
-            break;
-        }
-
-        case 'total': {
-            if (listCommandUsed > Date.now()) {
-                client.say(`After ${Math.floor((listCommandUsed - Date.now()) / 1000)} seconds. you can use this command.`);
-                return;
-            }
-            listCommandUsed = Date.now() + 60_000;
-            getRooms().then(ls => {
-                let counter = 0;
-                let roomLength = 0;
-                let users = [];
-                ls.forEach(room => {
-                    counter += room.count;
-                    roomLength++;
-                    if (typeof room.crown == "object") {
-                        if (users.map(ppl => ppl._id).indexOf(room.crown.userId) > -1) {
-                            users.forEach(user => {
-                                if (user._id == room.crown.userId) user.ownedRooms++;
-                            });
-                        } else users.push({ "_id": room.crown.userId, "ownedRooms": 1 });
-                    }
-                });
-                let ownedMostRooms = users.sort((a, b) => parseFloat(b.ownedRooms) - parseFloat(a.ownedRooms));
-                client.say(
-                    `Multiplayer Piano: ${numberFormatter.format(counter)} users online on ${numberFormatter.format(roomLength)} public room${roomLength > 1 ? "s" : ""}. Users in MPP who owned the most rooms: 1st - _ID: ${ownedMostRooms[0] ? ownedMostRooms[0]._id : "Unknown"}, ${numberFormatter.format(ownedMostRooms[0] ? ownedMostRooms[0].ownedRooms : 0)} room${ownedMostRooms[0] && ownedMostRooms[0].ownedRooms > 1 ? "s" : ""}, 2nd - _ID: ${ownedMostRooms[1] ? ownedMostRooms[1]._id : "Unknown"}, ${numberFormatter.format(ownedMostRooms[1] ? ownedMostRooms[1].ownedRooms : 0)} room${ownedMostRooms[1] && ownedMostRooms[1].ownedRooms > 1 ? "s" : ""}, 3rd - _ID: ${ownedMostRooms[2] ? ownedMostRooms[2]._id : "Unknown"}, ${numberFormatter.format(ownedMostRooms[2] ? ownedMostRooms[2].ownedRooms : 0)} room${ownedMostRooms[2] && ownedMostRooms[2].ownedRooms > 1 ? "s" : ""}.`
-                );
-            });
             break;
         }
 

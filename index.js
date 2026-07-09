@@ -26,10 +26,37 @@ const desiredInitialChSet = {
 let didRunSetupDesired = false;
 
 // functions
+function verbose(type = 'undefined', channel = 'MAIN', msg = 'please input a message!') {
+    if(msg == 'please input a message!') return;
+    const typeOverride = {
+        INFO: '\x1b[34m[INFO]\x1b[0m',
+        WARN: '\x1b[33m[WARN]\x1b[0m',
+        ERROR: '\x1b[31m[ERROR]\x1b[0m',
+        CRITICAL: '\x1b[1;31m[CRITICAL]\x1b[0m',
+        undefined: '\x1b[90m[UNDEFINED]\x1b[0m'
+    };
+
+    type = (typeOverride[type]) ? typeOverride[type] : typeOverride['undefined'];
+    console.log(`${type}[${channel}] ${msg}`)
+}
+
+/* 
+COPYPASTE STUFF
+verbose('INFO', 'MAIN', '')
+verbose('WARN', 'MAIN', '')
+verbose('ERROR', 'MAIN', '')
+verbose('CRITICAL', 'MAIN', '')
+verbose('undefined', 'MAIN', '')
+*/
+
 function setupRoom() {
-    if (!client.channel || client.channel.id != desiredChannel) return;
-    if (msg.ch.crown.userId != client.user.id) return;
-    if (didRunSetupDesired == true) return;
+    if (!client.channel) return verbose('CRITICAL', 'ROOM SETUP', 'client.channel object does not exist');
+    if (client.channel.id !== desiredChannel._id) 
+        verbose('CRITICAL', 'ROOM SETUP', 'client is on the wrong channel!') 
+        client.sendArray([desiredChannel])
+        return;
+    if (msg.ch.crown.userId != client.user.id) return verbose('WARN', 'ROOM SETUP', 'client does not have the crown');
+    if (didRunSetupDesired == true) return /*silently does not go*/;
 
     if (
         msg.ch.settings.color != desiredInitialChSet.color ||
@@ -41,6 +68,7 @@ function setupRoom() {
             m: 'chset',
             set: desiredInitialChSet
         }])
+        verbose('WARN', 'ROOM SETUP', 'ran room setup!')
         didRunSetupDesired = true;
     }
 }
@@ -58,14 +86,13 @@ client.on('hi', msg => {
     }
 
     client.sendArray([desiredChannel]);
-
-    setTimeout(() => {
-        setupRoom();
-    }, 1000);
 });
 
 client.on('ch', msg => {
-    // Set to desired (first-run)
+    // Persistent client.channel
+    client.channel = msg.ch;
+    verbose('INFO', 'ch', msg.ch.id)
+    setupRoom();
 });
 
 client.on('ppl', msg => {
@@ -76,3 +103,4 @@ client.on('ppl', msg => {
 });
 
 client.start();
+verbose('INFO', 'MAIN', 'client starting...')

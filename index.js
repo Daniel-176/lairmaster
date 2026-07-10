@@ -2,6 +2,7 @@ require('dotenv').config();
 const Client = require('./Client');
 const client = new Client(process.env.TOKEN);
 const fs = require('fs');
+const hexToTerminal = require('./hexToTerminal');
 
 // desired stuff
 const desiredUser = {
@@ -37,7 +38,7 @@ client.voteKickUsers = {};
 client.voteBanUsers = {};
 client.admins = process.env.ADMINS.split(',');
 
-client.setColor = function(msg) {
+client.setColor = function (msg) {
     const parts = msg.split(" ");
     const color = parts[1];
     const color2 = parts[2];
@@ -48,8 +49,8 @@ client.setColor = function(msg) {
     }
 };
 
-client.giveCrownTo = function(id) {
-    this.sendArray([{m: "chown", id}]);
+client.giveCrownTo = function (id) {
+    this.sendArray([{ m: "chown", id }]);
 };
 
 function randomArray(arr) {
@@ -65,10 +66,10 @@ async function getRooms() {
             }
         };
         client.on('ls', handler);
-        client.sendArray([{m: '+ls'}]);
+        client.sendArray([{ m: '+ls' }]);
         setTimeout(() => {
             client.removeListener('ls', handler);
-            client.sendArray([{m: '-ls'}]);
+            client.sendArray([{ m: '-ls' }]);
             resolve([]);
         }, 5000);
     });
@@ -80,7 +81,7 @@ const idRegex = /^[0-9a-f]{24}$/i;
 
 // functions
 function verbose(type = 'undefined', channel = 'MAIN', msg = 'please input a message!') {
-    if(msg == 'please input a message!') return;
+    if (msg == 'please input a message!') return;
     const typeOverride = {
         INFO: '\x1b[34m[INFO]\x1b[0m',
         WARN: '\x1b[33m[WARN]\x1b[0m',
@@ -104,10 +105,10 @@ verbose('undefined', 'MAIN', '')
 
 function setupRoom() {
     if (!client.channel) return verbose('CRITICAL', 'ROOM SETUP', 'client.channel object does not exist');
-    if (client.channel.id !== desiredChannel._id) 
-        verbose('CRITICAL', 'ROOM SETUP', 'client is on the wrong channel!') 
-        client.sendArray([desiredChannel])
-        return;
+    if (client.channel.id !== desiredChannel._id)
+        verbose('CRITICAL', 'ROOM SETUP', 'client is on the wrong channel!')
+    client.sendArray([desiredChannel])
+    return;
     if (msg.ch.crown.userId != client.user.id) return verbose('WARN', 'ROOM SETUP', 'client does not have the crown');
     if (didRunSetupDesired == true) return /*silently does not go*/;
 
@@ -129,7 +130,7 @@ function setupRoom() {
 client.on('hi', msg => {
     // User Standards
     verbose('INFO', 'MAIN', 'client joined')
-    verbose('INFO', 'MAIN', '[u] '+JSON.stringify(msg.u))
+    verbose('INFO', 'MAIN', '[u] ' + JSON.stringify(msg.u))
     if (msg.u.name != desiredUser.name || msg.u.color != desiredUser.color) {
         client.sendArray([{
             m: 'userset',
@@ -384,6 +385,29 @@ client.on('a', msg => {
         default:
             break;
     }
+});
+
+//Bind After Connection
+setTimeout(() => {
+    client.on('participant added', msg => {
+        // console.log(msg)
+
+        // You should uncoment those lines if you don't want bots
+        
+        // if (msg.tag && msg.tag.text == "BOT") {
+        //     client.kickBan(msg._id, 360 * 1000)
+        // }
+        verbose('INFO', 'P+', hexToTerminal(`[${msg.id}] ${msg.name}`, msg.color))
+    })
+
+    client.on('participant removed', msg => {
+        // console.log(msg)
+        verbose('INFO', 'P-', hexToTerminal(`[${msg.id}] ${msg.name}`, msg.color))
+    })
+}, 5000);
+
+client.on('a', msg => {
+    console.log(`${hexToTerminal('[CHAT]', '#00ff00')}[${msg.p.id}] ${hexToTerminal(`${msg.p.name}: `, msg.p.color)} ${msg.a}`)
 });
 
 client.start();

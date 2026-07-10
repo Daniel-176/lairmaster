@@ -301,6 +301,11 @@ class Client extends EventEmitter {
             this.emit("participant added", part);
             this.emit("count", this.countParticipants());
         } else {
+            this.emit('participant update-2', {
+                "old":part,
+                "new":update,
+                "id": this.ppl[update.id].id
+            })
             Object.keys(update).forEach(key => {
                 part[key] = update[key];
             });

@@ -393,20 +393,63 @@ setTimeout(() => {
         // console.log(msg)
 
         // You should uncoment those lines if you don't want bots
-        
+
         // if (msg.tag && msg.tag.text == "BOT") {
-        //     client.kickBan(msg._id, 360 * 1000)
+        //     client.kickBan(msg._id, 60 * 60 * 1000)
         // }
-        verbose('INFO', 'P+', hexToTerminal(`[${msg.id}] ${msg.name}`, msg.color))
+        verbose('INFO', hexToTerminal('P+', '#00ff00'), hexToTerminal(`[${msg.id}] ${msg.name}`, msg.color))
+    })
+
+    client.on('participant update-2', msg => {
+        let changedVars = [];
+        if(msg.old.color != msg.new.color) changedVars.push('color');
+        if(msg.old.name != msg.new.name) changedVars.push('name');
+        changedVars = changedVars.toString();
+
+        switch (changedVars) {
+            case 'color,name':
+                verbose(
+                    'INFO', 
+                    hexToTerminal('P', '#ffae00'), 
+                    `[${msg.id}] ` +
+                    hexToTerminal(`(${msg.old.color})${msg.old.name}`, msg.old.color) +
+                    ' changed its name and color to ' +
+                    hexToTerminal(`(${msg.new.color})${msg.new.name}`, msg.new.color)
+                )
+                break;
+            case 'color':
+                verbose(
+                    'INFO', 
+                    hexToTerminal('P', '#ffae00'), 
+                    `[${msg.id}] ` +
+                    hexToTerminal(`(${msg.old.color})${msg.old.name}`, msg.old.color) +
+                    ' changed its color to ' +
+                    hexToTerminal(`(${msg.new.color})${msg.new.name}`, msg.new.color)
+                )
+                break;
+            case 'name':
+                verbose(
+                    'INFO', 
+                    hexToTerminal('P', '#ffae00'), 
+                    `[${msg.id}] ` +
+                    hexToTerminal(`(${msg.old.color})${msg.old.name}`, msg.old.color) +
+                    ' changed its name to ' +
+                    hexToTerminal(`(${msg.new.color})${msg.new.name}`, msg.new.color)
+                )
+                break;
+            default:
+                break;
+        }
     })
 
     client.on('participant removed', msg => {
         // console.log(msg)
-        verbose('INFO', 'P-', hexToTerminal(`[${msg.id}] ${msg.name}`, msg.color))
+        verbose('INFO', hexToTerminal('P-', '#ff0000'), hexToTerminal(`[${msg.id}] ${msg.name}`, msg.color))
     })
 }, 5000);
 
 client.on('a', msg => {
+    msg.a = msg.a.replaceAll(/\p{Cf}/gu, '');
     console.log(`${hexToTerminal('[CHAT]', '#00ff00')}[${msg.p.id}] ${hexToTerminal(`${msg.p.name}: `, msg.p.color)} ${msg.a}`)
 });
 
